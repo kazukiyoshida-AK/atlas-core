@@ -44,3 +44,35 @@ Global Intelligence DB connection: Not authorized
 Initial implementation: Pure Core Model only
 ```
 
+## ACR-003 — Atlas Core Canonical Evidence Model v0.1
+
+```text
+Decision ID: ACR-003
+Title: Atlas Core Canonical Evidence Model v0.1
+Status: Approved
+Decision date: 2026-08-02
+Approved by: User
+Canonical definition: Domain-independent immutable reference to a captured evidence artifact or selected artifact range
+Required source reference: Yes
+Required provenance reference: Yes
+Required artifact locator: Yes
+Evidence kind: Extensible identifier
+Raw payload embedding: Not allowed
+Binary embedding: Not allowed
+Content digest: Optional
+Digest algorithm: Optional and paired with content digest
+Mutable processing status: Not included
+Mutable availability status: Not included
+Single confidence score: Not included
+Replacement: New Evidence plus append-only relation records
+Deduplication: Outside Canonical Evidence
+Storage design: Storage-neutral
+Existing RawIngestionRecord: Global Intelligence Domain-specific Ingestion Record
+Existing Repository modification: Not authorized
+Migration: Not authorized
+Adapter: Not authorized
+Backfill: Not authorized
+Dual-write: Not authorized
+Initial implementation: Pure Core Model only
+```
+
