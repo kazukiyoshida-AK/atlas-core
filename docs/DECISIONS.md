@@ -76,3 +76,42 @@ Dual-write: Not authorized
 Initial implementation: Pure Core Model only
 ```
 
+## ACR-004 — Atlas Core Canonical Provenance Model v0.1
+
+```text
+Decision ID: ACR-004
+Title: Atlas Core Canonical Provenance Model v0.1
+Status: Approved
+Decision date: 2026-08-03
+Approved by: User
+Canonical unit: One completed atomic activity occurrence
+Required actor reference: Yes
+Activity kind: Extensible identifier
+Input references: Optional opaque references
+Parent provenance references: Optional opaque references
+Execution reference: Optional
+Model reference: Optional
+Prompt reference: Optional
+Configuration reference: Optional
+External run reference: Optional
+Output references: Not included
+Raw payload embedding: Not allowed
+Observation content embedding: Not allowed
+Prompt content embedding: Not allowed
+Mutable workflow status: Not included
+Failed attempts: Separate future model
+Validation results: Not included
+Single confidence score: Not included
+Secret storage: Not allowed
+Retry and rerun: New Provenance
+Revision: New Provenance plus future append-only relation
+Existing Domain Model automatic promotion: No
+Existing Repository modification: Not authorized
+Existing Database modification: Not authorized
+Migration: Not authorized
+Adapter: Not authorized
+Backfill: Not authorized
+Dual-write: Not authorized
+Initial implementation: Pure Core Model only
+```
+
