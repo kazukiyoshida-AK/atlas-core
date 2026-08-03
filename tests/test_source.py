@@ -385,10 +385,11 @@ def test_observation_and_provenance_remain_importable() -> None:
     assert atlas_core.Provenance is Provenance
 
 
-def test_package_exports_all_four_core_models() -> None:
+def test_package_exports_all_core_models() -> None:
     import atlas_core
 
     assert set(atlas_core.__all__) == {
+        "Actor",
         "Evidence",
         "Observation",
         "Provenance",

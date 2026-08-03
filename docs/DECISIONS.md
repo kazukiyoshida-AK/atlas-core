@@ -167,3 +167,48 @@ Dual-write: Not authorized
 Initial implementation: Pure Core Model only
 ```
 
+## ACR-006 — Atlas Core Canonical Actor Model v0.1
+
+```text
+Decision ID: ACR-006
+Title: Atlas Core Canonical Actor Model v0.1
+Status: Approved
+Decision date: 2026-08-03
+Approved by: User
+Canonical unit: Stable Human or Non-human attribution identity to which Atlas attributes activity performance
+Exact field count: 4
+Required fields: 4
+Optional fields: 0
+Field order: actor_id, actor_kind, canonical_name, recorded_at
+Actor kind: Extensible opaque identifier
+Canonical name: Primary label adopted by Atlas at record creation
+Canonical name uniqueness: Not guaranteed
+Actor is distinct from: Source, Provenance, Tool, Model, Provider, Execution, Job, Account, Credential, Authorization Principal, and Role
+Source and Actor boundary: Contextual role, not entity-type based; no cross-Concept identity assumption
+Tool, Model, and Provider fields: Not included in Actor
+Relationship fields: Not included; deferred to future Actor Relationship Model
+Role fields: Not included; expressed via separate Activities, not intrinsic to Actor
+Account and Credential fields: Not included
+Authorization Principal fields: Not included
+Lifecycle and status fields: Not included
+Personal contact information: Not included
+Secret storage: Not allowed
+Unknown and anonymous Actors: Complete non-empty Canonical records
+Provenance actor_ref cardinality: Unchanged, one opaque actor_ref per Provenance record
+Multiple-Actor boundary: Distinct activities performed by distinct Actors use separate Provenance records
+Known co-performers: Must not be arbitrarily discarded merely to fit one actor_ref
+Multi-participant implementation: Not authorized
+Observation modification: Not authorized
+Evidence modification: Not authorized
+Source modification: Not authorized
+Provenance modification: Not authorized
+Existing Domain Model automatic promotion: No
+Existing Repository modification: Not authorized
+Existing Database modification: Not authorized
+Migration: Not authorized
+Adapter: Not authorized
+Backfill: Not authorized
+Dual-write: Not authorized
+Initial implementation: Pure Core Model only
+```
+
