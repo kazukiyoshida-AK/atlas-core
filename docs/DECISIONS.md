@@ -212,3 +212,38 @@ Dual-write: Not authorized
 Initial implementation: Pure Core Model only
 ```
 
+## ACR-007 Revision 1 — Atlas Core Canonical AI Model v0.1
+
+```text
+Decision ID: ACR-007
+Revision: Revision 1
+Title: Atlas Core Canonical AI Model v0.1
+Status: Approved
+Decision date: 2026-08-03
+Approved by: User
+Canonical unit: One specific identifiable Provider-neutral AI/ML model release, or one persistent separately attributable derivative admitted under the Identity Admission Rule
+Exact field count: 4
+Required fields: 4
+Optional fields: 0
+Field order: model_id, model_kind, canonical_name, recorded_at
+Model kind: Extensible opaque identifier; initial Recommended Vocabulary documented, not enforced
+Canonical name: Primary label adopted by Atlas at record creation
+Canonical name uniqueness: Not guaranteed
+Identity admission rule: Family-only and mutable-alias-only labels are insufficient for Known Model minting; Unknown Model records are valid and distinct from model_ref = None
+Correction and invalid-record policy: No in-place mutation, no automatic merge, no ID reuse; old and corrected records remain unresolved within Core pending a future Resolution/Revision Concept (documented v0.1 Operational Limitation)
+Duplicate-record risk: Known Operational Risk in the absence of a minting authority and Resolution mechanism; no automatic deduplication performed
+Derivative policy: Persistent fine-tune, continued pretraining, instruction tuning, RLHF-derived release, distillation, or model merge may be a new Model identity; runtime-only LoRA, quantization alone, format conversion, endpoint/Provider/hosting change, and configuration change are not, by default
+Lineage fields: Not included (no base_model_ref, parent_model_ref, derivation_kind)
+Provider, Deployment, Endpoint, Tool, Prompt, Configuration, Capability, Evaluation, Lifecycle fields: Not included
+Relationships: Deferred to future Model Family, Alias, Relationship, Resolution, Revision, and Artifact Concepts
+Provenance.model_ref: Unchanged, str | None, opaque
+Existing Domain Model automatic promotion: No
+Existing Repository modification: Not authorized
+Existing Database modification: Not authorized
+Migration: Not authorized
+Adapter: Not authorized
+Backfill: Not authorized
+Dual-write: Not authorized
+Initial implementation: Pure Core Model only
+```
+

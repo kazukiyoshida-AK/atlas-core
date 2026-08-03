@@ -389,6 +389,7 @@ def test_package_exports_all_core_models() -> None:
     import atlas_core
 
     assert set(atlas_core.__all__) == {
+        "AIModel",
         "Actor",
         "Evidence",
         "Observation",
