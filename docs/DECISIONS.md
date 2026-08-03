@@ -115,3 +115,55 @@ Dual-write: Not authorized
 Initial implementation: Pure Core Model only
 ```
 
+## ACR-005 Revision 1 — Atlas Core Canonical Source Model v0.1
+
+```text
+Decision ID: ACR-005
+Revision: Revision 1
+Title: Atlas Core Canonical Source Model v0.1
+Status: Approved
+Decision date: 2026-08-03
+Approved by: User
+Canonical unit: Specific identifiable originating identity directly attributed by Atlas as the origin of information captured by Evidence
+Exact field count: 4
+Required fields: 4
+Optional fields: 0
+Field order: source_id, source_kind, canonical_name, recorded_at
+Source kind: Extensible opaque identifier
+Canonical name: Primary label adopted by Atlas at record creation
+Canonical name uniqueness: Not guaranteed
+Canonical name currency: Not guaranteed
+Canonical name authority: Not guaranteed
+Normalization: Not allowed
+Relationships: Deferred to future Source Relationship Model
+Parent source reference: Not included
+Established time: Not included
+Locator and endpoint fields: Not included
+Provider fields: Not included
+Reliability and assessment fields: Not included
+Mutable lifecycle status: Not included
+Platform-specific identifiers: Not included
+Personal contact information: Not included
+Secret storage: Not allowed
+Raw payload embedding: Not allowed
+Evidence content embedding: Not allowed
+Observation content embedding: Not allowed
+Unknown and anonymous Sources: Complete non-empty Canonical records
+Evidence relationship: Opaque source_ref to source_id
+Reverse Evidence references: Not included
+Entity resolution: Outside Core
+Deduplication: Outside Core
+Merge and split logic: Outside Core
+Observation modification: Not authorized
+Evidence modification: Not authorized
+Provenance modification: Not authorized
+Existing Domain Model automatic promotion: No
+Existing Repository modification: Not authorized
+Existing Database modification: Not authorized
+Migration: Not authorized
+Adapter: Not authorized
+Backfill: Not authorized
+Dual-write: Not authorized
+Initial implementation: Pure Core Model only
+```
+
