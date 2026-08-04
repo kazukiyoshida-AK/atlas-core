@@ -392,6 +392,7 @@ def test_package_exports_all_core_models() -> None:
         "AIModel",
         "Actor",
         "Evidence",
+        "ExecutionSpecification",
         "Observation",
         "Provenance",
         "Source",

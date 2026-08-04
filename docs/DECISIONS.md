@@ -247,3 +247,41 @@ Dual-write: Not authorized
 Initial implementation: Pure Core Model only
 ```
 
+## ACR-008 — Atlas Core Canonical Execution Specification v0.1
+
+```text
+Decision ID: ACR-008
+Title: Atlas Core Canonical Execution Specification v0.1
+Status: Approved
+Decision date: 2026-08-04
+Approved by: User
+Canonical unit: One revision-distinguishable, first-class, reusable implementation definition of the Tool, Adapter, Parser, Pipeline, Workflow, or Analysis Engine used to perform an activity
+Exact field count: 4
+Required fields: 4
+Optional fields: 0
+Field order: execution_specification_id, execution_kind, canonical_name, recorded_at
+Execution kind: Extensible opaque identifier; initial Recommended Vocabulary documented, not enforced (tool, adapter, parser, pipeline, workflow, analyzer, engine, collector, classifier, client, service, function, unknown)
+Canonical name: Primary label adopted by Atlas at record creation; must identify the specific implementation revision adopted, not merely a bare shared label
+Canonical name uniqueness: Not guaranteed
+Version or code_revision field: Not included; a materially distinct code revision is a new independent record, never a field update
+Bare shared label sufficiency: A bare shared label (e.g. a label reused across several distinct implementations) is not sufficient for Known identity when it fails to distinguish the specific revision; Core does not enforce this at construction time
+First-class invocation boundary: A standalone Function may be Known only when directly selected or invoked as the activity's executable unit, independently named, and reusable across occurrences; an internal helper method or function called only within a larger Tool/Adapter/Pipeline is not independently admitted
+Known Execution Specification: Requires a stable, reusable, revision-distinguishable implementation definition, reused across multiple Provenance occurrences; not merely a Job/Run/Attempt identifier; not merely a deployment/container/runtime identifier; not automatically promoted from an existing Domain class name
+Unknown Execution Specification: A complete, non-empty record is valid when code/Tool use is known but exact identity is unresolved, unavailable, withheld, or confidential
+execution_ref = None: Distinct from an Unknown Execution Specification record; means no Execution Specification applies or Tool use was not recorded
+Job, Attempt, Run, request, retry: Not included; occurrence-level, excluded from this Concept
+Deployment, Runtime, Container, Provider fields: Not included
+Configuration, AIModel, Actor fields: Not included; already separate Concepts/Provenance fields
+Correction and invalid-record policy: No in-place mutation, no automatic merge, no ID reuse; old and corrected records remain unresolved within Core pending a future Resolution/Revision Concept (documented v0.1 Operational Limitation)
+Duplicate-record risk: Known Operational Risk in the absence of a minting authority and Resolution mechanism; no automatic deduplication performed
+Provenance.execution_ref: Unchanged, str | None, opaque
+Existing Domain Model automatic promotion: No
+Existing Repository modification: Not authorized
+Existing Database modification: Not authorized
+Migration: Not authorized
+Adapter: Not authorized
+Backfill: Not authorized
+Dual-write: Not authorized
+Initial implementation: Pure Core Model only
+```
+

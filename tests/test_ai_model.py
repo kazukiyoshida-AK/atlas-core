@@ -615,13 +615,14 @@ def test_provenance_retains_exact_approved_thirteen_field_set() -> None:
 # --- Package export and cross-Concept isolation ---
 
 
-def test_package_exports_all_six_core_models() -> None:
+def test_package_exports_all_seven_core_models() -> None:
     import atlas_core
 
     assert set(atlas_core.__all__) == {
         "AIModel",
         "Actor",
         "Evidence",
+        "ExecutionSpecification",
         "Observation",
         "Provenance",
         "Source",
