@@ -285,3 +285,50 @@ Dual-write: Not authorized
 Initial implementation: Pure Core Model only
 ```
 
+## ACR-009 — Atlas Core Canonical Prompt Specification v0.1
+
+```text
+Decision ID: ACR-009
+Title: Atlas Core Canonical Prompt Specification v0.1
+Status: Approved
+Decision date: 2026-08-04
+Approved by: User
+One-sentence definition: A Prompt Specification is the stable, reusable, revision-distinguishable instructional definition Atlas selected for an activity, separate from AIModel, ExecutionSpecification, Actor, Configuration, Rendered Prompt, retrieved context, user input, and conversation history
+Canonical unit: One specific, named, revision-distinguishable, reusable instructional definition selected for reuse across activities
+Exact field count: 4
+Required fields: 4
+Optional fields: 0
+Defaults: 0
+Field order: prompt_specification_id, prompt_kind, canonical_name, recorded_at
+Prompt content in Core: NO
+Content hash in Core: NO
+Rendered Prompt in Core: NO
+Prompt Artifact: Deferred, not designed or implemented in v0.1
+Exact reproducibility: Not guaranteed by Core alone; documented v0.1 Operational Limitation (content cannot be reconstructed, content integrity cannot be verified, loss of external content is not repairable from canonical_name, until a future Prompt Artifact Concept exists)
+prompt_kind classification axis: Structural architecture only
+prompt_kind recommended vocabulary: instruction, message_template, message_bundle, unknown
+prompt_kind excludes: message role (system, developer, user) and functional purpose (summarization, classification, routing, extraction, generation, analysis, evaluation); these are expressed via Provenance.activity_kind, ExecutionSpecification, or Domain policy, not prompt_kind
+Canonical name: Primary label adopted by Atlas at record creation, identifying the specific Prompt revision, not merely the Prompt family; revision identifier carried inside canonical_name (e.g. "Article Summarization Prompt prompt-v1"), no separate version/revision field
+Mutable alias as Known identity: Not permitted (production, latest, default, current alone are insufficient); not runtime-rejected, an admission-rule concern only
+Known Prompt Specification: Requires stable reusable revision-distinguishable identity, explicit registration, reuse across multiple Provenance occurrences, immutable treatment; not automatically promoted from a source filename or constant name
+Confidential Known Prompt: Withheld or confidential content alone does not force Unknown classification when identity is known; sanitized canonical_name permitted; no content stored regardless
+Unknown Prompt Specification: A complete, non-empty record is valid when some Prompt use is known but identity itself is unresolved or unavailable
+prompt_ref = None: Distinct from an Unknown Prompt Specification record; means no Prompt applies or Prompt use was not recorded
+One-off manually entered Prompt: Not automatically minted as Known unless registered as reusable; occurrence content belongs to a future Rendered Prompt/Input Artifact
+Dynamically generated Prompt: The generating Tool/Pipeline is an ExecutionSpecification, the generation occurrence is Provenance, the generated concrete output is a future Rendered Prompt/Artifact; not auto-minted per generated instance; only a registered stable generator skeleton may be Known
+New-identity rule: Materially distinct instructional wording, role assignment, message order, few-shot examples, variable contract, embedded output-format/JSON-schema, safety instructions, or independently operated translations require a new record; AIModel-only, ExecutionSpecification-only, Configuration-only, retrieved-context-only, user-input-only, conversation-history-only, request/retry/run-only, payload-serialization-only, and comment-only changes do not; whitespace/punctuation/spelling/formatting-only changes require explicit manual admission judgment, never automated
+Correction and invalid-record policy: No in-place mutation, no automatic merge, no ID reuse; old and corrected records remain unresolved within Core pending a future Resolution/Revision Concept (documented v0.1 Operational Limitation)
+Duplicate-record risk: Known Operational Risk in the absence of a minting authority and Resolution mechanism; no automatic deduplication, semantic deduplication, or hash-based deduplication performed
+Provenance.prompt_ref: Unchanged, str | None, opaque
+Existing Domain Model automatic promotion: No
+Existing Repository modification: Not authorized
+Existing Database modification: Not authorized
+Migration: Not authorized
+Adapter: Not authorized
+Backfill: Not authorized
+Dual-write: Not authorized
+Provider integration: Not authorized
+Prompt execution engine: Not authorized
+Initial implementation: Pure Core Model only
+```
+
