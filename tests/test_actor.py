@@ -629,12 +629,13 @@ def test_observation_evidence_source_provenance_remain_importable() -> None:
     assert atlas_core.Provenance is Provenance
 
 
-def test_package_exports_all_eight_core_models() -> None:
+def test_package_exports_all_nine_core_models() -> None:
     import atlas_core
 
     assert set(atlas_core.__all__) == {
         "AIModel",
         "Actor",
+        "ConfigurationSpecification",
         "Evidence",
         "ExecutionSpecification",
         "Observation",

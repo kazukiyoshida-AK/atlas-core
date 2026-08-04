@@ -332,3 +332,54 @@ Prompt execution engine: Not authorized
 Initial implementation: Pure Core Model only
 ```
 
+## ACR-010 — Atlas Core Canonical Configuration Specification v0.1
+
+```text
+Decision ID: ACR-010
+Title: Atlas Core Canonical Configuration Specification v0.1
+Status: Approved
+Decision date: 2026-08-04
+Approved by: User
+One-sentence definition: A Configuration Specification is the stable, reusable, revision-distinguishable identity of a definition of adjustable parameters Atlas selected for an activity, separate from AIModel, PromptSpecification, ExecutionSpecification, Actor, Deployment, Runtime, Provider, Secret, and Resolved Configuration
+Canonical unit: One specific, named, revision-distinguishable, reusable definition of a set of adjustable parameters (a Configuration Profile) selected for reuse across activities
+Exact field count: 4
+Required fields: 4
+Optional fields: 0
+Defaults: 0
+Field order: configuration_specification_id, configuration_kind, canonical_name, recorded_at
+Configuration content in Core: NO
+Resolved values in Core: NO
+Content hash in Core: NO
+Secrets/credentials in Core: NO
+Configuration Artifact: Deferred, not designed or implemented in v0.1
+Resolved Configuration: Deferred, not designed or implemented in v0.1
+Exact reproducibility: Not guaranteed by Core alone; documented v0.1 Operational Limitation (parameter names/values, defaults, overrides, and inheritance cannot be reconstructed; effective behavior cannot be fully reproduced; configuration drift and content integrity cannot be verified; loss of external content is not repairable from canonical_name, until future Configuration Artifact and Resolved Configuration Concepts exist)
+configuration_kind classification axis: Structural architecture only
+configuration_kind recommended vocabulary: parameter_profile, settings_bundle, policy_profile, feature_flag_set, unknown
+configuration_kind excludes: functional purpose (model_generation, routing, collection, analysis, publication, retry, timeout, scheduling) and source format/loading mechanism (environment, json, yaml, toml, command_line, env_file, settings_class); functional purpose is expressible via Provenance.activity_kind, ExecutionSpecification, or Domain-local policy instead
+Canonical name: Primary label adopted by Atlas at record creation, identifying the specific registered Configuration revision, not merely the family; revision identifier carried inside canonical_name (e.g. "Summarizer Generation Parameters gen-params-v1"), no separate version/revision field
+Mutable alias as Known identity: Not permitted (production, staging, default, current, latest alone are insufficient); not runtime-rejected, an admission-rule concern only
+Specification-revision vs. runtime-override boundary: A reusable registered profile definition change requires a new Configuration Specification; an occurrence-only effective-value change (single request/run/attempt override, temporary environment/CLI/request-payload resolution, secret rotation, Deployment-only or Runtime-only change, source-format-only change, source-file-location-only change, comment/whitespace-only change with unchanged effective definition, or key/serialization-order-only change) does not; an occurrence override pattern later formally registered for reuse becomes a new Configuration Specification at the moment of registration
+API endpoint/Deployment/Provider boundary: An endpoint selected or varied per registered Configuration profile is a Configuration content candidate (deferred to future Artifact, value never stored in Core); an endpoint fixed per process/service/environment/cluster/region is Deployment/Runtime, not Configuration; the Provider identity behind an endpoint is a separate, deferred Concept; no API URL, database URL, hostname, or region field exists on this Concept
+Known Configuration Specification: Requires stable reusable revision-distinguishable identity, explicit registration, reuse across multiple Provenance occurrences, immutable treatment; not automatically promoted from a Settings class, .env file, configuration file, environment name, CLI argument set, source filename, variable name, external Configuration ID, Domain constant, or existing content-bearing Domain table
+Confidential Known Configuration: Withheld or confidential parameter values alone do not force Unknown classification when identity is known; sanitized canonical_name permitted; no content stored regardless
+Unknown Configuration Specification: A complete, non-empty record is valid when some Configuration use is known but identity itself is unresolved or unavailable
+configuration_ref = None: Distinct from an Unknown Configuration Specification record; means no registered Configuration applies, hardcoded/default behavior was used without a registered identity, or Configuration use was not recorded
+Secret and confidential-data policy: Raw secret values, credentials, API keys, tokens, passwords, private keys, secret references, and secret/environment-variable names are never stored, Known or Unknown alike; secret rotation alone never changes Configuration Specification identity; no secret manager, secret resolution, access-control policy, confidentiality classifier, or redaction engine is designed or implemented
+Correction and invalid-record policy: No in-place mutation, no automatic merge, no ID reuse; old and corrected records remain unresolved within Core pending a future Resolution/Revision Concept (documented v0.1 Operational Limitation)
+Duplicate-record risk: Known Operational Risk in the absence of a minting authority and Resolution mechanism; no automatic deduplication, value-based deduplication, semantic deduplication, or hash-based deduplication performed
+Provenance.configuration_ref: Unchanged, str | None, opaque
+Existing Domain Model automatic promotion: No
+Existing Repository modification: Not authorized
+Existing Database modification: Not authorized
+Migration: Not authorized
+Adapter: Not authorized
+Backfill: Not authorized
+Dual-write: Not authorized
+Environment loader: Not authorized
+Secret manager: Not authorized
+Deployment integration: Not authorized
+Configuration execution engine: Not authorized
+Initial implementation: Pure Core Model only
+```
+
