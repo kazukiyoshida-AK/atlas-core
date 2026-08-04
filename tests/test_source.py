@@ -394,6 +394,7 @@ def test_package_exports_all_core_models() -> None:
         "ConfigurationSpecification",
         "Evidence",
         "ExecutionSpecification",
+        "ExternalRun",
         "Observation",
         "PromptSpecification",
         "Provenance",

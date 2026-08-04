@@ -383,3 +383,56 @@ Configuration execution engine: Not authorized
 Initial implementation: Pure Core Model only
 ```
 
+## ACR-011 — Atlas Core Canonical External Run v0.1
+
+```text
+Decision ID: ACR-011
+Title: Atlas Core Canonical External Run v0.1
+Status: Approved
+Decision date: 2026-08-04
+Approved by: User
+Canonical model type: Immutable occurrence identity record, not a reusable Specification
+Canonical name: Not included; occurrences do not have Atlas-adopted human labels, unlike Actor/AIModel/ExecutionSpecification/PromptSpecification/ConfigurationSpecification
+Canonical unit: One externally recognized and independently distinguishable execution occurrence at the highest logical execution level made available by the external system
+Hierarchy rule: If a Provider exposes a Job/Workflow Run ID, the Job/Workflow is the v0.1 External Run; if a Provider exposes only request/attempt-level IDs, each request/attempt is its own External Run; if a Provider exposes both a parent Run ID and Attempt IDs, the parent Run is the v0.1 External Run and Attempts are deferred; if a Provider retries internally under one Run ID, that is one External Run; if Atlas independently reissues external requests, each reissued request is a separate External Run
+Exact field count: 4
+Required fields: 3 (external_run_id, external_run_kind, recorded_at)
+Optional fields: 1 (external_identifier)
+Defaulted fields: 1 (external_identifier=None)
+Field order: external_run_id, external_run_kind, external_identifier, recorded_at
+external_run_kind classification axis: External execution architecture only
+external_run_kind recommended vocabulary: request, job, batch, workflow, operation, delivery, unknown
+external_run_kind excludes: response/context architecture (stream, session, thread, conversation, response, result), protocol/transport (http, webhook, queue, rpc, sdk, cli — webhook is transport, the occurrence-architecture equivalent is delivery), and functional purpose (generation, publication, collection, analysis, upload, download), all expressible via Provenance.activity_kind, ExecutionSpecification, or Domain-local policy instead
+External identifier policy: external_identifier, when present, is the execution-occurrence identifier issued by the external system, preserved verbatim; Atlas must never add a Provider prefix, construct a compound key, parse, normalize, case-convert, truncate, hash, mask, redact, or sanitize it; a sanitized/hashed/redacted substitute must never be stored under this field; if the exact identifier cannot appropriately be stored, external_identifier=None
+Prohibited identifier sources: Atlas-generated UUIDs, correlation IDs, compound/dedup keys, local database IDs, and External Resource IDs (post IDs, video IDs, listing IDs, article IDs, uploaded file IDs) must never be stored as external_identifier
+Security and privacy policy: Secrets, credentials, API keys, tokens, passwords, authorization headers, signed URLs, request/response payloads, raw error messages, personal information, direct user identifiers, session identifiers, thread/conversation identifiers, and External Resource IDs must never be stored anywhere in this record
+Known External Run: Requires Atlas to reasonably confirm the external system accepted, registered, or executed one independent occurrence, that the logical execution unit is distinguishable, and that execution semantics are understood; attempting to send a request, a local function call, a retry counter increment, an Atlas UUID, a timeout, or an unconfirmed acceptance are insufficient alone
+Known without stored identifier: Valid when occurrence and execution semantics are confirmed but the identifier was not issued, not returned, lost, confidential, or otherwise unsuitable to store
+Unknown External Run: Valid when the external occurrence is confirmed but logical identity or execution semantics remain unresolved; external_run_kind="unknown" is recommended, not enforced; an identifier may be stored only if Atlas can confirm it was issued by the external system for an execution occurrence, never as a generic container for an ambiguous ID; confidential identifiers alone do not force Unknown
+external_run_ref = None: Distinct from both Known and Unknown; means no external system was invoked, Atlas failed before external acceptance was confirmed, external execution could not be confirmed, or External Run use was not recorded
+Time policy: recorded_at means only the time Atlas recorded the record; no started_at, completed_at, or other external timestamp field exists in v0.1
+Status policy: No mutable status field exists; external status changes never update this record; deferred to a future External Run State/Timeline Concept
+Correction policy: No in-place mutation, no automatic merge, no ID reuse, no automatic deduplication; a corrected record is newly minted; old/new relationship remains unresolved within Core pending a future Resolution/Revision Concept (documented v0.1 Operational Limitation)
+Duplicate/collision risk: Known Operational Risk — the same identifier string may be issued by different Providers or reused after retention expiry; not detected, not prevented, not resolved in v0.1
+Cardinality: Provenance.external_run_ref remains singular, str | None, unchanged; sufficient for the currently observed one-Provenance-to-at-most-one-external-occurrence recording pattern; NOT sufficient for one Provenance orchestrating multiple external Runs, one Provenance retaining every retry identifier, one parent Run with separately addressable Attempts, or many-to-many Provenance/External Run relationships requiring relationship metadata (documented v0.1 Operational Limitation, deferred to a future Provenance revision, Provenance–External Run Relationship Concept, or External Attempt Concept)
+Provider/External System Concept: Deferred, not designed or implemented
+External Resource Concept: Deferred, not designed or implemented
+External Attempt Concept: Deferred, not designed or implemented
+External Run State/Timeline Concept: Deferred, not designed or implemented
+Provenance.external_run_ref: Unchanged, str | None, opaque
+Existing Domain Model automatic promotion: No
+Existing Repository modification: Not authorized
+Existing Database modification: Not authorized
+Migration: Not authorized
+Adapter: Not authorized
+Backfill: Not authorized
+Dual-write: Not authorized
+Provider integration: Not authorized
+Request execution: Not authorized
+Retry engine: Not authorized
+Webhook handler: Not authorized
+Status polling: Not authorized
+External API client: Not authorized
+Initial implementation: Pure Core Model only
+```
+
