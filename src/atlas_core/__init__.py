@@ -6,6 +6,7 @@ from atlas_core.artifact import Artifact
 from atlas_core.configuration_specification import ConfigurationSpecification
 from atlas_core.evidence import Evidence
 from atlas_core.execution_specification import ExecutionSpecification
+from atlas_core.external_resource import ExternalResource
 from atlas_core.external_run import ExternalRun
 from atlas_core.observation import Observation
 from atlas_core.prompt_specification import PromptSpecification
@@ -21,6 +22,7 @@ __all__ = [
     "ConfigurationSpecification",
     "Evidence",
     "ExecutionSpecification",
+    "ExternalResource",
     "ExternalRun",
     "Observation",
     "PromptSpecification",

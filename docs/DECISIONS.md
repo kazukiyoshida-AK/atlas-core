@@ -488,3 +488,51 @@ External Resource integration: Not authorized
 Initial implementation: Pure Core Model only
 ```
 
+## ACR-013 — Atlas Core Canonical External Resource v0.1
+
+```text
+Decision ID: ACR-013
+Title: Atlas Core Canonical External Resource v0.1
+Status: Approved
+Decision date: 2026-08-05
+Approved by: User
+Canonical model type: Immutable historical external-object identity record
+Canonical unit: One durable and independently re-referenceable object identity authoritatively recognized by an external system, independent of any specific execution, mutable observed state, or Artifact representation of that object. "Durable" means the object identity exists or existed independently of one request, response, function call, execution, or capture occurrence; it does not mean permanent storage, current existence, current retrievability, or current locator validity. A deleted resource may still qualify as Known if it was once independently recognized.
+Exact field count: 5
+Required fields: 3 (external_resource_id, external_resource_kind, recorded_at)
+Optional fields: 2 (external_identifier, resource_locator)
+Defaulted fields: 2, both default to None
+Field order: external_resource_id, external_resource_kind, external_identifier, resource_locator, recorded_at
+canonical_name: Not included; external titles, handles, and usernames are mutable and often absent entirely, evidenced across all four investigated repositories
+external_resource_kind classification axis: external resource architecture only (object, account, document, file, record, collection, dataset, message, model, deployment, unknown); media/content type, Domain semantic type, and Provider-specific type are explicitly excluded from the recommended vocabulary
+external_identifier semantics: the identifier issued or authoritatively recognized by the external system for the durable object, preserved verbatim; never Atlas-constructed, normalized, prefixed, parsed, or Provider-inferred; not globally unique; not verified by Core
+URL identifier-versus-locator rule: a URL may serve as external_identifier only when the external system itself authoritatively treats the exact URL as the object's identifier and no distinct authoritative object ID is available or used; otherwise the URL belongs in resource_locator
+YouTube clarification: external_identifier is the authoritative YouTube video ID, resource_locator is the YouTube video URL; the complete video URL is not used as external_identifier merely because an existing Domain repository currently stores only the URL, and the same URL is not automatically placed in both fields
+Atlas-generated composite key rule: Atlas-constructed compound keys (e.g. series+date, symbol+timestamp) are prohibited as external_identifier; only externally-authoritative composite keys are permitted
+resource_locator semantics: the opaque locator Atlas recorded for addressing the external resource at registration time; historical only, never guaranteed current or reachable; distinct from Artifact.artifact_locator and Evidence.artifact_locator, which address Atlas's own captured copy rather than the live external object
+Provider context: absent from Core by design; v0.1 permits registration without Provider context while explicitly accepting unresolved cross-provider collision and identity-scoping limitations; not described as collision-safe
+Source/Provider relationship: Deferred; source_ref, provider_ref, external_system_ref, and owner_ref are not included because origin, ownership, publication, and syndication cardinality may differ by Domain
+Known/Unknown/No Resource rules: Known may validly contain only external_resource_id, external_resource_kind, and recorded_at with both optional fields None; confidentiality alone does not force Unknown; Unknown requires a confirmed durable external object whose specific identity or semantics are unresolved and is never a generic container for an arbitrary unresolved ID; no record exists when only a transient response or execution occurred
+Confidential identity-only Known records: explicitly permitted; both external_identifier and resource_locator may be None simultaneously without forcing Unknown status
+Mutable state boundary: mutable/measured state (titles, prices, metrics, follower counts, availability) belongs to Observation or a future External Resource State Concept, never to this identity record; content representations belong to Artifact; executions belong to ExternalRun
+Account/channel/shop dual identity: an account, channel, or shop may have both a separate External Resource record and a separate Actor record when both aspects are needed; no relationship field is added and the IDs are never merged
+input_refs: Provenance.input_refs unchanged, tuple[str, ...] = (); ExternalResource.external_resource_id is one valid semantic referent among several (Artifact, Observation, Evidence, Source, External Resource) when an activity materially targets, consumes, reads, updates, or deletes the external object, not the only possible referent
+input_refs limitation: input_refs cannot expose target Concept, relationship role, or Provider scope; this pre-existing ACR-004 heterogeneity is unchanged and extended, not resolved, by this Decision
+Security and privacy: secrets, credentials, API keys, access tokens, passwords, authorization data, signed URLs, session IDs, private conversation/thread IDs, email addresses, phone numbers, and other direct personal identifiers must never be stored in external_identifier or resource_locator; when unsafe, both fields are None rather than a sanitized, masked, truncated, or hashed substitute
+Time policy: recorded_at only, meaning solely the time Atlas recorded the record, never external creation, publication, update, deletion, restoration, or locator-change time
+Immutability and correction: none of title change, price change, metrics change, content change, locator change, redirect, temporary unavailability, deletion, restoration, or ownership change mutate the record; a genuinely new external object identity requires a new record; an incorrect record is never overwritten, mutated, merged, or reused, and any corrected record is newly minted with the old/new relationship unresolved within Core v0.1
+Existing-model compatibility: Provenance, Source, Actor, Artifact, ExternalRun, Observation, Evidence, AIModel, ExecutionSpecification, PromptSpecification, and ConfigurationSpecification remain entirely unmodified; Provenance remains exactly 13 fields
+Deferred relationship Concepts: External Resource–Source Relationship, External Resource–Provider Relationship, External Resource–Actor Relationship, External Resource–Artifact Relationship, External Resource–ExternalRun Relationship, External Resource–Observation Relationship, External Resource Hierarchy/Membership, External Resource Location, External Resource Revision, External Resource Redirect/Equivalence, External Resource Ownership/Publication/Syndication Relationship, Typed Provenance Input Relationship
+Existing Domain Model automatic promotion: No
+Existing Repository modification: Not authorized
+Existing Database modification: Not authorized
+Migration: Not authorized
+Adapter: Not authorized
+Backfill: Not authorized
+Dual-write: Not authorized
+Provider integration: Not authorized
+Network access: Not authorized
+Resource synchronization: Not authorized
+Initial implementation: Pure Core Model only
+```
+

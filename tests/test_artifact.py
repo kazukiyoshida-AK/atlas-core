@@ -1023,7 +1023,7 @@ def test_no_evidence_artifact_circular_import() -> None:
 # --- Package export and cross-Concept isolation ---
 
 
-def test_package_exports_all_eleven_core_models() -> None:
+def test_package_exports_all_twelve_core_models() -> None:
     import atlas_core
 
     assert set(atlas_core.__all__) == {
@@ -1033,6 +1033,7 @@ def test_package_exports_all_eleven_core_models() -> None:
         "ConfigurationSpecification",
         "Evidence",
         "ExecutionSpecification",
+        "ExternalResource",
         "ExternalRun",
         "Observation",
         "PromptSpecification",
