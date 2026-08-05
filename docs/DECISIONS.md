@@ -436,3 +436,55 @@ External API client: Not authorized
 Initial implementation: Pure Core Model only
 ```
 
+## ACR-012 — Atlas Core Canonical Artifact v0.1
+
+```text
+Decision ID: ACR-012
+Title: Atlas Core Canonical Artifact v0.1
+Status: Approved
+Decision date: 2026-08-04
+Approved by: User
+Canonical model type: Immutable representation-revision identity record
+Canonical unit: One immutable, independently distinguishable representation revision of information or content that Atlas deliberately retained or registered for durable reference. Artifact is not a capture occurrence; capture, download, generation, conversion, and serialization are Provenance activities, and Artifact is the representation those activities deliberately retained or registered.
+Exact field count: 7
+Required fields: 3 (artifact_id, artifact_kind, recorded_at)
+Optional fields: 4 (content_digest, digest_algorithm, media_type, artifact_locator)
+Defaulted fields: 4, all default to None
+Field order: artifact_id, artifact_kind, content_digest, digest_algorithm, media_type, artifact_locator, recorded_at
+Digest pair invariant: content_digest and digest_algorithm must be both present or both absent, enforced
+canonical_name: Not included; a representation revision is not a human-adopted reusable label
+byte_length / size_bytes: Not included in v0.1, deliberately diverging from Evidence's shape; deferred to a future Artifact Integrity Concept
+Raw content in Core: NO, under any circumstance
+Identity semantics: representation identity, never semantic identity, never capture-occurrence identity; two representations with different bytes are always different Artifacts regardless of matching meaning; a matching digest and algorithm across two records is evidence supporting byte-representation equality but never causes Core to merge, reuse, or deduplicate identities
+content_digest semantics: a Domain-supplied digest of the exact registered representation bytes; never computed, normalized, or canonicalized by Core
+artifact_locator semantics: the opaque locator Atlas recorded for the representation at registration time; not guaranteed current or retrievable; prohibited from containing signed URLs, credentials, API keys, access tokens, passwords, authorization data, personal information, or confidential query parameters
+media_type semantics: opaque, finer representation metadata, distinct from artifact_kind's structural axis, never MIME-parsed or validated
+artifact_kind classification axis: representation architecture only (text, binary, structured, collection, unknown); media family, semantic purpose, and storage format are explicitly excluded from the recommended vocabulary
+Git/temporary/cache rule: Git tracking status, filename, directory name, cache name, or temporary storage path alone neither establishes nor disqualifies Artifact status; the determining fact is deliberate retention or registration for durable reference
+Prompt/Configuration representations: Prompt template content, rendered Prompts, Configuration parameter bundles, resolved Configuration snapshots, and API request/response representations may become Canonical Artifacts when durably retained/registered; a future Prompt Artifact or Configuration Artifact Concept is not decided to be exclusive of Canonical Artifact
+Known Artifact: May validly contain only artifact_id, artifact_kind, and recorded_at when digest, locator, and media_type cannot appropriately be stored; confidentiality alone does not force Unknown status
+Unknown Artifact: Valid only when a durable/registered Artifact is known to have existed but its representation identity or kind is unresolved or unavailable; never used merely because a response occurred but was never retained
+Absence from input_refs: Provenance.input_refs == () does not imply an Unknown Artifact exists
+Security and privacy: no raw content, secrets, credentials, API keys, tokens, passwords, authorization headers, signed URLs, or personal information may be stored anywhere in this record; digest of secret content is never required
+Time policy: recorded_at means only the time Atlas recorded the record, never content creation, capture, retrieval, modification, publication, deletion, or expiry time
+Immutability and correction: records are never overwritten or mutated; a changed byte representation always requires a new Artifact identity; a corrected record is newly minted with the old/new relationship unresolved within Core; duplicate records and duplicate digest values remain technically constructible
+Input/output roles: relationships, not intrinsic Artifact fields; no artifact_role, produced_by_provenance_ref, input_provenance_refs, or output_provenance_refs field exists
+Provenance.input_refs: Unchanged, tuple[str, ...] = (); Artifact.artifact_id is one valid semantic referent among several (Artifact, Observation, Evidence, Source when materially consumed), not the only possible referent; pre-existing ACR-004 heterogeneity is unchanged
+input_refs heterogeneity limitation: input_refs contains opaque strings and does not expose which Canonical Concept a given reference targets; deferred to a future typed Provenance Input Relationship Concept
+Evidence compatibility: Evidence remains entirely unmodified; Evidence.artifact_locator is not declared equal to, or automatically resolved into, Artifact.artifact_id; recorded as a Named Compatibility Limitation and Open Question
+Deferred relationship Concepts: Provenance–Artifact Relationship, Artifact Derivation, Artifact Collection Membership, Artifact Storage Location, Artifact Integrity, Artifact–External Resource Relationship, Artifact–Observation/Evidence Relationship, Typed Provenance Input Relationship, Evidence–Artifact Relationship
+Existing Domain Model automatic promotion: No
+Existing Repository modification: Not authorized
+Existing Database modification: Not authorized
+Migration: Not authorized
+Adapter: Not authorized
+Backfill: Not authorized
+Dual-write: Not authorized
+Object storage: Not authorized
+Content ingestion: Not authorized
+Hash computation: Not authorized
+MIME detection: Not authorized
+External Resource integration: Not authorized
+Initial implementation: Pure Core Model only
+```
+
