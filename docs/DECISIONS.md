@@ -536,3 +536,57 @@ Resource synchronization: Not authorized
 Initial implementation: Pure Core Model only
 ```
 
+## ACR-014 — Atlas Core Canonical Reference Frontier and Pre-Phase-3 Closure v0.1
+
+```text
+Decision ID: ACR-014
+Title: Atlas Core Canonical Reference Frontier and Pre-Phase-3 Closure v0.1
+Status: Approved
+Decision date: 2026-08-06
+Approved by: User
+Current Canonical Model layer: Conditionally closed
+Approved current Model count: 12
+Undefined committed reference targets: 0
+Current reference closure: Complete for the present Core layer
+Approved closure set: Observation, Evidence, Provenance, Source, Actor, AIModel, ExecutionSpecification, PromptSpecification, ConfigurationSpecification, ExternalRun, Artifact, ExternalResource
+Meaning of conditionally closed: the current twelve Canonical Models are sufficient for the present Core foundation and for entry into the next phase; no additional Canonical Model is required before the next phase; conditionally closed does not mean permanently or universally complete, and a future ACR may reopen the Model layer when new cross-Domain evidence establishes a blocking requirement
+Terminology correction: Source, Actor, AIModel, ExecutionSpecification, PromptSpecification, and ConfigurationSpecification share a four-field named reusable identity shape; only ExecutionSpecification, PromptSpecification, and ConfigurationSpecification are Specifications; Source, Actor, and AIModel are identities, not Specifications
+Provenance.input_refs: Unchanged, tuple[str, ...] = (); no Provenance field changes are approved by this Decision
+input_refs target-type ambiguity: Accepted non-blocking limitation
+input/target/context role ambiguity: Accepted non-blocking limitation
+Generic Canonical Relationship: Rejected
+Typed Provenance Input Relationship: Deferred, not required before next phase
+Provenance Output Relationship: Deferred, not required before next phase
+Narrow Provenance–Artifact Output Relationship: the highest-priority future Relationship candidate; not required before the next phase
+Phase-entry blocker from missing Provenance–Artifact producer link: No
+Real producer-lineage replay/audit limitation: Yes; the missing producer relationship does not prevent construction of valid current Core records, but it prevents complete producer-lineage replay and audit when a workflow must prove exactly which Provenance activity produced one specific Artifact
+Deferred: ExternalResource–Artifact Relationship, Evidence–Artifact Relationship, Artifact Derivation
+Rejected for the present scope, not as a permanent universal prohibition: Generic Canonical Relationship/Edge, Provenance–ExternalResource Creation Relationship, HypothesisRevision as an independent Core task before Canonical Hypothesis exists
+Domain relationship evidence: the investigated Domains show different relationship pressures — atlas-x-engine: production lineage; ai-video-tracker: run membership; atlas-global-intelligence: knowledge/reasoning graph; etsy-analyzer: no current persistent Core relationship call site; these do not establish one stable universal relationship atomic unit
+Canonical Hypothesis: Domain-only for the present phase; not required before next phase; the implemented atlas-global-intelligence Hypothesis is mutable, Domain-specific, uses Domain enums, and references targets through target_type plus target_code rather than a Canonical Core reference; a future Canonical Hypothesis is not permanently rejected
+Canonical HypothesisRevision: Invalid as an independent Core Concept before Canonical Hypothesis; not required before next phase; a Canonical Revision Concept must not be designed before the identity and atomic unit it revises have been canonically defined; no separate Decision Ledger clarification is required beyond this ACR-014 record
+Canonical AnalysisSnapshot: Domain-only in its currently implemented form; not required before next phase; the implemented atlas-global-intelligence AnalysisSnapshot is a Domain-specific one-to-one AnalysisRun companion with JSON-bearing rule and input content; its immutability or append-only enforcement was not established by the inspected code and is not claimed by this Decision
+Observation Catalog requires a new Canonical Model before integration: No
+Approved next approach: Observation Catalog Integration Contract, which may use existing IDs from Observation, Provenance, Artifact, ConfigurationSpecification, Source, and ExternalResource
+ObservationSpecification: not pre-approved; remains only a future candidate if the Integration Contract proves that the existing Models are insufficient
+Next phase entry: Approved in principle, subject to recording ACR-014 in the Decision Ledger; that recording condition is satisfied by this ACI-023 commit
+Potential next Design Decision: Atlas Core Observation Catalog Integration Contract v0.1; not started or designed by this Decision
+Existing Domain Model automatic promotion: No
+Canonical Model implementation: Not authorized
+Relationship implementation: Not authorized
+Observation Catalog implementation: Not authorized
+ObservationSpecification implementation: Not authorized
+Hypothesis implementation: Not authorized
+HypothesisRevision implementation: Not authorized
+AnalysisSnapshot implementation: Not authorized
+Knowledge implementation: Not authorized
+Phase 3 implementation: Not authorized
+Database: Not authorized
+Migration: Not authorized
+Adapter: Not authorized
+Backfill: Not authorized
+Dual-write: Not authorized
+Provider integration: Not authorized
+Network access: Not authorized
+```
+
