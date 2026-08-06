@@ -590,3 +590,70 @@ Provider integration: Not authorized
 Network access: Not authorized
 ```
 
+## ACR-015 — Atlas Core Observation Catalog Integration Contract v0.1
+
+```text
+Decision ID: ACR-015
+Title: Atlas Core Observation Catalog Integration Contract v0.1
+Status: Approved
+Decision date: 2026-08-06
+Approved by: User
+Selected outcome: Integration Contract only
+ObservationSpecification required now: No
+Current twelve Models sufficient for initial Catalog integration: Yes
+Canonical Model layer: Unchanged, conditionally closed
+Observation Catalog ownership: Domain
+Catalog entry identity ownership: Domain
+Catalog revision identity ownership: Domain
+Catalog definition content ownership: Domain
+Catalog lifecycle ownership: Domain
+Primary Integration Contract form: Standalone Atlas Core contract document (docs/OBSERVATION_CATALOG_INTEGRATION_CONTRACT.md); not a Core dataclass, not a Core database table, not a shared JSON Schema, not a Canonical Relationship Model, not a Domain migration
+Leading contract atomic unit: one immutable Domain-owned Catalog production binding stating that one Provenance activity applied one Domain Catalog entry revision to govern one declared Canonical observation_kind
+Mandatory production binding fields: catalog_entry_id, catalog_entry_revision_id, definition_artifact_id, provenance_id, observation_kind, recorded_at
+Conditional production binding field: definition_selector, required only when the referenced Artifact contains more than one Catalog entry revision
+Observation-to-binding uniqueness invariant: within one Provenance activity, one observation_kind must resolve to exactly one Catalog production binding
+Output Observation IDs: not mandatory when the uniqueness invariant is satisfied; when it cannot be satisfied the Domain must record separate Provenance activities or retain explicit output_observation_ids in a Domain-local binding extension
+Definition Artifact retention: mandatory for every production-used Catalog entry revision; preferred default is one definition Artifact per Catalog entry revision; a bundled Artifact covering multiple entries or revisions is permitted only with an immutable deterministic definition_selector that resolves exactly one revision; Artifact identity does not guarantee physical byte availability or verified byte-level integrity
+Artifact is not: Catalog entry identity, Catalog revision identity, execution identity, the production activity, or Evidence by default
+Provenance.input_refs: Unchanged, tuple[str, ...] = (); no Provenance field changes are approved by this Decision
+Raw Domain Catalog IDs (catalog_entry_id, catalog_entry_revision_id) in Provenance.input_refs: Prohibited
+Canonical definition Artifact ID in Provenance.input_refs: Conditional, only under existing approved material-input or governing-input semantics
+Execution-related identity: remains on Provenance.execution_ref, Provenance.configuration_ref, Provenance.prompt_ref, Provenance.model_ref, Provenance.external_run_ref; these do not replace Catalog semantic revision identity
+Identity replay: supported after Contract adoption through the retained Domain production binding
+Semantic replay: supported after Contract adoption through the retained exact definition Artifact
+Execution replay: partial and environment-dependent, through Provenance references plus Domain code/dependency/environment availability
+Byte-for-byte reproduction: not guaranteed
+Complete Catalog audit traceability before Contract adoption: No
+Complete Catalog audit traceability after conforming adoption: Yes, subject to retained binding and definition availability
+Observation immutability alone: insufficient for historical semantic interpretation; the exact retained definition revision is additionally required
+Execution/Configuration/Prompt/Model IDs as Catalog revision identity substitute: Rejected; Catalog entry revision requires its own Domain-owned revision identity
+ExecutionSpecification: reusable extraction, parsing, normalization, measurement, or validation implementation identity; not Catalog semantic meaning
+ConfigurationSpecification: reusable runtime parameter selection, threshold, applicability filter, enabled entry set, depth, or resource-budget selection; not Catalog semantic meaning
+PromptSpecification and AIModel change: creates a new Catalog semantic revision only when meaning, unit, value interpretation, applicability, normalization, or validation semantics change; otherwise it is an execution-layer change only
+Source: origin of information, not automatically Catalog owner; Source kind belongs in definition/applicability content, Source identity is a runtime fact
+ExternalResource: potential observed object, not automatically the observed object; ExternalResource kind belongs in definition/applicability content, ExternalResource identity is a runtime fact
+Evidence: Catalog definitions, extraction procedures, and validation rules are not Evidence merely because they govern production; a validation report may be Artifact, Evidence, or Domain-only depending on independent support of the Observation; Evidence Model unchanged
+Unit and value-type policy: value interpretation, value type, unit or explicit unitless status, nullability/unknown behavior, normalization semantics, and non-scalar representation policy are preserved as definition content; no Core unit registry, no closed Core type enum, no arbitrary JSON added to Observation
+Lifecycle: Domain-owned; lifecycle changes do not mutate historical production bindings; deprecation does not invalidate historical Observations; deprecated revisions remain resolvable; lifecycle state is not copied into production bindings
+Multi-depth processing (fast/deep/verification): depth normally changes ExecutionSpecification and/or ConfigurationSpecification identity, not semantic revision; a new semantic revision is required only when meaning, unit, value interpretation, applicability, normalization, or validation semantics change
+Non-scalar output limitation: Atlas Core currently has no dedicated Observation-to-output-Artifact reference; exact linkage from one Observation to one non-scalar output Artifact (vector, embedding, bounding box, time series, structured object, large text, image, audio, or video segment) remains a Domain-local, non-blocking limitation; this does not approve or reopen the deferred Provenance–Artifact Output Relationship, the deferred Evidence–Artifact Relationship, a generic Relationship, or a new Observation field
+Domain adoption: additive and optional for atlas-global-intelligence, ai-video-tracker, atlas-x-engine, and etsy-analyzer; for etsy-analyzer, existing scoring features are Domain analysis logic and are not automatically Catalog entries or Canonical Observations, and become Catalog entry candidates only if the Domain later explicitly classifies their outputs as observations governed by this Contract; no migration authorized by this Decision
+Compatibility: Observation, Evidence, Provenance, Source, Actor, AIModel, ExecutionSpecification, PromptSpecification, ConfigurationSpecification, ExternalRun, Artifact, and ExternalResource are all unchanged by this Decision
+Canonical Model implementation: Not authorized
+ObservationSpecification implementation: Not authorized
+Catalog database table: Not authorized
+Core production-binding dataclass: Not authorized
+Shared JSON Schema: Not authorized
+Domain Adapter implementation: Not authorized
+Domain migration: Not authorized
+Backfill: Not authorized
+Dual-write: Not authorized
+Catalog service: Not authorized
+Schema registry: Not authorized
+Network access: Not authorized
+Package installation: Not authorized
+Phase 3 implementation: Not authorized
+Next task ID: ACI-024, Record ACR-015 and Add Observation Catalog Integration Contract v0.1, Documentation-only Implementation
+Next Decision after ACI-024: first Domain adoption trial requires a separate future Decision
+```
+
