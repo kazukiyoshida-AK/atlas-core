@@ -657,3 +657,57 @@ Next task ID: ACI-024, Record ACR-015 and Add Observation Catalog Integration Co
 Next Decision after ACI-024: first Domain adoption trial requires a separate future Decision
 ```
 
+## ACR-016 — Atlas Global Intelligence Observation Catalog Adoption Trial v0.1
+
+```text
+Decision ID: ACR-016
+Title: Atlas Global Intelligence Observation Catalog Adoption Trial v0.1
+Status: Approved
+Decision date: 2026-08-06
+Approved by: User
+First adoption Domain: atlas-global-intelligence
+Suitable as first adoption trial: Yes, for a bounded Definition Artifact pre-pilot
+Selected adoption stage: Definition Artifact pre-pilot
+Selected adoption option: C
+Selected persistence form: C1, File/manifest pre-pilot
+Selected Indicator code: OWID_GDP_PER_CAPITA_WLD
+Selected Indicator name: GDP per capita, PPP (World) — Our World in Data / World Bank
+Selected Indicator unit: 2017 international $
+Selected Indicator frequency: ANNUAL
+Selected Indicator country code: None
+Selected Source: MANUAL_CSV
+Selected adapter: ManualCsvAdapter
+Repository Truth source for the selected Indicator: backend/scripts/seed_masters.py (an implemented, idempotent Indicator creation path with the approved exact values); this proves the creation path exists, not that the row exists in every runtime database — a future implementation must verify the exact runtime row and stop without modifying seed data if it is absent or different
+Selected observation_kind: economic_indicator_value; recorded as semantic definition content only at this stage, and does not by itself create a Canonical Observation of that kind
+Pre-pilot persistence: one immutable definition document, one Canonical Artifact representation, one immutable Domain revision-to-Artifact manifest entry; no Domain database table; no Alembic migration
+Domain revision-to-Artifact manifest fields: catalog_entry_id, catalog_entry_revision_id, definition_artifact_id, recorded_at
+Domain revision-to-Artifact mapping is not the ACR-015 Catalog production binding, and must never be called a production binding; the ACR-015 production binding remains exactly catalog_entry_id, catalog_entry_revision_id, definition_artifact_id, provenance_id, observation_kind, recorded_at, and is not created by this pre-pilot
+Immutable mapping boundary: each revision-to-Artifact mapping entry is append-only; existing mapping entries and Artifact identities are never overwritten or deleted; a mutable current-preferred-representation selection, if introduced, must remain separate from the immutable mapping, and is not a production binding, not a Canonical lifecycle Model, and not a replacement for an earlier Artifact
+Rollback: stopping future pre-pilot writes and disabling future use of trial output; existing definition Artifacts and immutable mapping entries remain retained for auditability; no existing Indicator or Observation data is repaired or deleted
+Creates Catalog production binding: No
+Creates Canonical Provenance: No
+Creates Canonical Evidence: No
+Creates Canonical Observation: No
+Validates Observation-to-binding uniqueness: No
+Validates full ACR-015 production conformance: No
+Complete production-conformance pilot still required later: Yes
+Atlas Core Model modification: No
+New Canonical Model: No
+ObservationSpecification: No
+Domain database migration: No
+Historical backfill: No
+Existing Domain Observation mutation: No
+Existing Domain Indicator mutation: No
+Definition Artifact policy: one definition Artifact per one Indicator semantic revision; definition_selector not required; Artifact identity, definition bytes, manifest entry, and physical byte storage are four distinct concerns; Artifact identity does not guarantee permanent physical availability; the definition Artifact is not Catalog revision identity, not Evidence, not the production activity, and not the manifest entry
+Semantic definition content retained at minimum: catalog_entry_id, catalog_entry_revision_id, name, observation_kind, value interpretation, value type, unit or explicit unitless status, frequency, scope interpretation, target_code semantics, observation_date semantics, period_start semantics, period_end semantics, released_at semantics, vintage_at semantics, nullability, unknown handling, normalization semantics, validation semantics, precision, scale, non-scalar policy
+New semantic revision required for changes to: unit, frequency, country or scope, value interpretation, value type, precision or scale, period interpretation, observation-date interpretation, release or vintage interpretation, Source-kind applicability, normalization semantics, validation semantics
+No semantic revision by default for: display-label correction, documentation typo, formatting correction, representation-only correction, lifecycle change, specific Source selection, runtime date range, batch size; a representation-only correction may create another immutable Artifact under the same semantic revision without changing prior mapping entries
+Investigated Domain baseline: repository /Users/AI/Documents/atlas-global-intelligence, branch main, HEAD 80977992127b3e726bc4ef7028cba1b4d0fdef2c, commit count 10, working tree dirty (modified backend/app/models/enums.py; untracked backend/.env.before-neon, backend/alembic/versions/0007_create_knowledge_enum_types.py, backend/mac_atlas_data.dump, backend/tests/models/test_knowledge_enums.py)
+ACR-016 read-only design investigation: Permitted
+Any future pre-pilot or full-pilot implementation from this dirty working tree: Prohibited; before future implementation the exact clean HEAD must be recorded, the working tree must be clean, staged and untracked paths must be verified, secret/dump files must not be staged, existing migration work must be resolved separately, and no cleanup is authorized by ACR-016
+Canonical Observation construction gap: the Domain's SQLAlchemy Observation row is not, and must not be treated as, a Canonical Observation instance; Canonical Observation requires a non-empty evidence_refs tuple and a provenance_ref with no direct Domain source, and observed_at requires an unresolved date-to-timezone-aware-datetime mapping decision; a future full pilot seeking literal Contract conformance must construct new, additional Canonical Observation instances, not reinterpret the existing row
+Evidence construction gap: Canonical Evidence's required fields map cleanly onto RawIngestionRecord's content_hash/external_ref/fetched_at fields, but require minting a Canonical Source instance and a Canonical Provenance instance first, and cannot be constructed for Observation rows where raw_ingestion_record_id is NULL, which a future pilot must skip rather than reject
+Next task ID: ACI-025, Record ACR-016 and Add Atlas Global Intelligence Definition Artifact Pre-Pilot Plan v0.1, Documentation-only Implementation
+Next step after ACI-025: a separate, explicitly verified clean implementation baseline in atlas-global-intelligence is required before any Domain pre-pilot or full-pilot implementation task
+```
+
