@@ -771,3 +771,20 @@ Next task ID: ACI-027, implement and run the ACR-017 full production-conformance
 Next step after ACI-026: a separate, explicitly verified clean implementation baseline and an available, passing local isolated test DB in atlas-global-intelligence are required before any full-pilot implementation task begins
 ```
 
+## ACR-018 — Atlas Foundry Persistent Intelligence Philosophy v1.0
+
+```text
+Decision ID: ACR-018
+Title: Atlas Foundry Persistent Intelligence Philosophy v1.0
+Status: Approved
+Decision date: 2026-08-18
+Approved by: User
+Implementation task: ACI-028
+Scope: Documentation-only canonicalization; no code, DB, migration, Role, or Head implementation
+Canonical document: docs/ATLAS_FOUNDRY_PERSISTENT_INTELLIGENCE_PHILOSOPHY.md
+Status of philosophy: company-level and architecture-level governing philosophy, binding on Atlas Core, Atlas Head / Cognitive Governance, Knowledge Architecture, Observation / Evidence Architecture, Learning / Revision Architecture, Policy / Permit / Authority Architecture, Portfolio / Capability Architecture, and Domain repositories (Video / Global / Real Estate and future Domains)
+Relationship to existing Canon: does not replace Atlas Core Canon, 4大不変原則, Observation First, Adaptive Intelligence Depth Principle, Knowledge Revision, Capability Improvement, ACR-015, ACR-016, ACR-017, or the approved Atlas Head / Cognitive Governance design; conflicts require an explicit future Decision, not silent reinterpretation
+Historical Task-ID reconciliation: ACR-017's recorded next-task-ID ACI-027 remains unchanged as historical record; the ACR-017 full production-conformance pilot work was actually executed and completed as AGI-FPC-001 in atlas-global-intelligence; ACI-027 is not reused by this Decision
+Next action: AH-CGR-001 (Atlas Head / Cognitive Governance) MUST NOT begin until this Task (ACI-028) is complete
+```
+
