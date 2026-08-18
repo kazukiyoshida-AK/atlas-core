@@ -788,3 +788,225 @@ Historical Task-ID reconciliation: ACR-017's recorded next-task-ID ACI-027 remai
 Next action: AH-CGR-001 (Atlas Head / Cognitive Governance) MUST NOT begin until this Task (ACI-028) is complete
 ```
 
+## ACR-019 — Atlas Governance Canonical Reconciliation
+
+```text
+Decision ID: ACR-019
+Title: Atlas Governance Canonical Reconciliation
+Status: Approved
+Architecture status: CANONICAL AND FIXED
+Decision date: 2026-08-19 (approved in controlling design/review session, task AH-CGR-001)
+Canonicalized: 2026-08-19 (this entry, task AH-CGR-008C)
+Approved by: User
+Reference document: docs/ATLAS_GOVERNANCE_STAGE1_ARCHITECTURE.md, section 1
+Implementation status: Governance DB not yet created; Alembic not yet initialized; migration implementation not yet started; runtime not yet implemented
+atlas-core package: dependency-free Canonical Contract package, 12 frozen dataclasses, no ORM, no SQLAlchemy, no Alembic, no SQL, no auth/role implementation
+Core references: opaque string IDs
+Canonical RawArtifact: does not exist; generic Artifact Canonical Model exists (ACR-012)
+Canonical Actor: semantic/accountable identity, distinct from Authentication Principal and DB Role
+Governance physical FK to Core: not required, not selected
+Canonical ID reference integration: compatible with Core as-is
+ACR-018 alignment: no material conflict
+Existing Canonical Models: unchanged by this Decision
+```
+
+## ACR-020 — Atlas Governance Physical DB Ownership
+
+```text
+Decision ID: ACR-020
+Title: Atlas Governance Physical DB Ownership
+Status: Approved
+Architecture status: CANONICAL AND FIXED
+Decision date: 2026-08-19 (approved in controlling design/review session, task AH-CGR-002)
+Canonicalized: 2026-08-19 (this entry, task AH-CGR-008C)
+Approved by: User
+Reference document: docs/ATLAS_GOVERNANCE_STAGE1_ARCHITECTURE.md, section 2
+atlas-core ownership: Canonical contracts / philosophy / invariants / decisions
+atlas-governance ownership: Governance runtime, PostgreSQL owner, Alembic owner, DB Role owner, SECURITY DEFINER owner, Audit owner, Policy/Permit owner
+Primary schema: atlas_governance
+Governance to Core reference type: CANONICAL ID REFERENCE (TEXT), no physical FK
+Direct Domain writes to Governance DB: PROHIBITED
+Artifact tombstone ownership: Governance owns tombstone/audit continuity; Domain/storage owns physical byte deletion
+ACR-018 alignment: no material conflict
+```
+
+## ACR-021 — Atlas Governance Repository Bootstrap Boundary
+
+```text
+Decision ID: ACR-021
+Title: Atlas Governance Repository Bootstrap Boundary
+Status: Approved
+Architecture status: CANONICAL AND FIXED
+Decision date: 2026-08-19 (approved in controlling design/review session, task AH-CGR-003)
+Canonicalized: 2026-08-19 (this entry, task AH-CGR-008C)
+Approved by: User
+Reference document: docs/ATLAS_GOVERNANCE_STAGE1_ARCHITECTURE.md, section 3
+Repository: dedicated atlas-governance repository selected and bootstrapped
+Runtime DB at bootstrap point: none
+Migration at bootstrap point: none
+DB roles at bootstrap point: none
+Implementation at bootstrap point: none
+Repository role: designated future Governance implementation owner only
+Stage 1 implementation claim: none made by this Decision
+ACR-018 alignment: no material conflict
+```
+
+## ACR-022 — Atlas Governance Identity & Authority Boundary
+
+```text
+Decision ID: ACR-022
+Title: Atlas Governance Identity & Authority Boundary
+Status: Approved
+Architecture status: CANONICAL AND FIXED
+Decision date: 2026-08-19 (approved in controlling design/review session, task AH-CGR-004)
+Canonicalized: 2026-08-19 (this entry, task AH-CGR-008C)
+Approved by: User
+Reference document: docs/ATLAS_GOVERNANCE_STAGE1_ARCHITECTURE.md, section 4
+Canonical Actor: durable accountable semantic identity (atlas-core); != Authentication Principal, != Service Identity, != Database Role
+Authentication Principal: authenticated request/session identity
+Service Identity: durable non-human operational identity
+Authorization Evaluator: Canonical Actor acting in evaluator capacity for a Policy Decision
+Database Role: PostgreSQL privilege identity only, never implies Actor identity or policy authority
+Mappings: Principal to Actor; Service Identity to Actor; Service Identity to external credential 1:N; Request Context to Principal; Policy Decision to evaluator Actor
+Fixed fields remaining Canonical Actor IDs: initiator_actor_id, decision_evaluator_actor_id
+Credential material storage in Actor/Governance epistemic history: not allowed
+Stage 1 DB-role strategy: one atlas_app_role, separate auth_service_role
+ACR-018 alignment: no material conflict
+```
+
+## ACR-023 — Atlas Governance API / Domain Integration Contract
+
+```text
+Decision ID: ACR-023
+Title: Atlas Governance API / Domain Integration Contract
+Status: Approved
+Architecture status: CANONICAL AND FIXED
+Decision date: 2026-08-19 (approved in controlling design/review session, task AH-CGR-005)
+Canonicalized: 2026-08-19 (this entry, task AH-CGR-008C)
+Approved by: User
+Reference document: docs/ATLAS_GOVERNANCE_STAGE1_ARCHITECTURE.md, section 5
+Stage 1 integration architecture: HYBRID
+Operation synchrony: Factual Projection ASYNC, Epistemic Proposal ASYNC, Governed Action Request SYNC, Outcome Submission ASYNC, Reconciliation ASYNC/on-demand
+Core invariant: Domain factual ingestion != Governance runtime availability
+Mutating request identity: caller-generated integration_request_id, uniqueness scope (service_identity_id, integration_request_id), payload_digest required
+Same ID same digest: same logical request (idempotent replay)
+Same ID different digest: IDEMPOTENCY_CONFLICT
+Canonical references: ID-only by default; optional historical snapshot never replaces source of truth
+Direct Domain to Governance DB writes: PROHIBITED; Domain registration required before integration
+High-impact governed actions: synchronous
+Audit failure: blocks governed mutation transaction (atomicity)
+ACR-018 alignment: no material conflict
+```
+
+## ACR-024 — Atlas Governance Physical Schema Design
+
+```text
+Decision ID: ACR-024
+Title: Atlas Governance Physical Schema Design
+Status: Approved
+Architecture status: CANONICAL AND FIXED
+Decision date: 2026-08-19 (approved in controlling design/review session, task AH-CGR-006)
+Canonicalized: 2026-08-19 (this entry, task AH-CGR-008C)
+Approved by: User
+Reference document: docs/ATLAS_GOVERNANCE_STAGE1_ARCHITECTURE.md, section 6
+Primary schema: atlas_governance
+Stage 1 table count: 25
+Table inventory: service_identities, authentication_principals, identity_actor_mappings, authenticated_request_contexts, domain_registrations, domain_registration_operation_classes, integration_requests, policy_decisions, epistemic_nodes, epistemic_evidence_links, epistemic_observation_links, epistemic_relations, epistemic_revisions, epistemic_status_events, evidence_snapshots, evidence_snapshot_items, artifact_tombstones, model_runs, disagreement_aggregations, proposals, permits, decision_outcomes, audit_chain_heads, audit_events, domain_reconciliation_states
+Governance-native PKs: UUID by default
+Canonical references: TEXT
+Governance to Core FK: none
+Timestamps: TIMESTAMPTZ
+PostgreSQL ENUM: not used
+Closed vocabularies: CHECK-constrained TEXT
+Hard DELETE runtime path: prohibited
+epistemic_nodes.current_status: stored cache only; status-event history authoritative
+Evidence snapshots: historical-context-only; raw snapshot content not stored by default
+Permits: one-time in Stage 1
+Audit hash chain: per service
+decision_outcomes and domain_reconciliation_states: dedicated tables
+ACR-018 alignment: no material conflict
+```
+
+## ACR-025 — Atlas Governance DB Role / SECURITY DEFINER Boundary
+
+```text
+Decision ID: ACR-025
+Title: Atlas Governance DB Role / SECURITY DEFINER Boundary
+Status: Approved
+Architecture status: CANONICAL AND FIXED
+Decision date: 2026-08-19 (approved in controlling design/review session, tasks AH-CGR-007 and AH-CGR-007A)
+Canonicalized: 2026-08-19 (this entry, task AH-CGR-008C)
+Approved by: User
+Reference document: docs/ATLAS_GOVERNANCE_STAGE1_ARCHITECTURE.md, section 7
+Roles: atlas_governance_owner (NOLOGIN owner), atlas_governance_migrator (administrative LOGIN migration identity), auth_service_role (runtime auth role), atlas_app_role (runtime app role)
+Runtime direct DML, auth_service_role: INSERT NO, UPDATE NO, DELETE NO
+Runtime direct DML, atlas_app_role: INSERT NO, UPDATE NO, DELETE NO
+Runtime mutation path: function-mediated only
+SECURITY DEFINER invariants: hardened search_path required, PUBLIC EXECUTE revoked, owner non-superuser/non-runtime, caller identity derived from stored context not DB role, no runtime upward SET ROLE, no direct runtime EXECUTE on internal audit-append function, audit mutation atomic with the governed change it records
+Epistemic status transitions (Validated/Rejected/Superseded): require associated Policy Decision
+Permit issuance: function-only
+Permit consumption: concurrency-safe
+Consumed permit: terminal, cannot later be revoked
+Domain registration scope change: preserves history via replacement record, not in-place mutation
+Owner/migrator boundary: trusted administrative root boundary, technically privileged outside runtime restrictions by design
+ACR-018 alignment: no material conflict
+```
+
+## ACR-026 — Atlas Governance Migration Architecture & Function Inventory
+
+```text
+Decision ID: ACR-026
+Title: Atlas Governance Migration Architecture & Function Inventory
+Status: Approved
+Architecture status: CANONICAL AND FIXED
+Decision date: 2026-08-19 (approved in controlling design/review session, tasks AH-CGR-008 and AH-CGR-008A)
+Canonicalized: 2026-08-19 (this entry, task AH-CGR-008C)
+Approved by: User
+Reference document: docs/ATLAS_GOVERNANCE_STAGE1_ARCHITECTURE.md, section 8
+Implementation status: Governance DB not yet created, Alembic not yet initialized, migration implementation not yet started, runtime not yet implemented
+Migration architecture: MULTIPLE DEPENDENCY-BOUNDED REVISIONS
+Infrastructure boundary: DB creation outside Alembic, role creation outside Alembic, schema creation inside Alembic
+Conceptual sequence: B001 Infrastructure/DB provisioning (non-Alembic), B002 Role Bootstrap (non-Alembic), M001-M014 Alembic chain (schema, identity tables, domain/integration tables, epistemic core, policy/permit, epistemic status events, snapshot/tombstone/outcome, audit infrastructure, reconciliation state, functions by dependency/security family, runtime grants/revokes, verification/lockdown)
+Runtime activation: only after final verification/lockdown gate passes
+Production data protection: destructive downgrade of data-bearing tables prohibited; forward-fix preferred once historical data exists
+Migration/deployment audit vs Governance runtime audit: distinct, never conflated
+Business seed data in migrations: none
+Stage 1 SECURITY DEFINER function count: 32
+Externally callable function count: 31
+Internal-only function count: 1
+Function families and role bindings: Auth (2, auth_service_role), Identity (3, atlas_app_role), Domain (3, atlas_app_role), Integration (2, atlas_app_role), Epistemic (6, atlas_app_role), Proposal (3, atlas_app_role), Policy (1, atlas_app_role), Permit (3, atlas_app_role), Snapshot (1, atlas_app_role), Tombstone (1, atlas_app_role), Outcome (1, atlas_app_role), Model (2, atlas_app_role), Disagreement (2, atlas_app_role), Reconciliation (1, atlas_app_role), Internal (1, append_audit_event, no runtime EXECUTE grant)
+Grant counts: auth_service_role 2, atlas_app_role 29, append_audit_event runtime EXECUTE none
+ACR-018 alignment: no material conflict
+```
+
+## ACR-027 — Atlas Governance First-Root Service Identity Bootstrap
+
+```text
+Decision ID: ACR-027
+Title: Atlas Governance First-Root Service Identity Bootstrap
+Status: Approved
+Architecture status: CANONICAL AND FIXED
+Decision date: 2026-08-19 (approved in controlling design/review session, tasks AH-CGR-008B and AH-CGR-008B1)
+Canonicalized: 2026-08-19 (this entry, task AH-CGR-008C)
+Approved by: User
+Reference document: docs/ATLAS_GOVERNANCE_STAGE1_ARCHITECTURE.md, section 9
+Selected architecture: Option B modified, reusing existing register_service_identity
+New permanent DB role: none
+New table: none
+New SECURITY DEFINER function: none
+Bootstrap executor: atlas_governance_migrator, via existing capability to assume/inherit atlas_governance_owner authority
+Bootstrap timing: strictly after M014
+First-bootstrap Request Context: none used; ceremony accepts an externally-established Canonical Actor ID
+Production bootstrap: requires explicit human approval, not automatic
+One-time guard: request_context_id may be NULL only while service_identities is empty, evaluated under a concurrency-safe check
+Atomicity: Service Identity creation, audit_chain_head initialization, and BOOTSTRAP_SERVICE_IDENTITY audit event committed in one transaction; any failure rolls back entirely
+Successful bootstrap without audit event: prohibited by the approved function path
+Post-bootstrap state: bootstrap exception structurally and permanently closes after first success; all later Service Identities use the normal governed register_service_identity path
+bootstrap_operation_id: required, purpose is traceability only, not a strict idempotency/replay key
+Strict request idempotency: NO
+Retry safety: YES, via atomicity plus the empty-table guard
+Unknown outcome handling: read-only state verification required before any retry decision
+Function count impact: none, remains 32
+ACR-018 alignment: no material conflict
+```
+
