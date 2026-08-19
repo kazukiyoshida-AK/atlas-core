@@ -977,6 +977,17 @@ Internal-only function count: 1
 Function families and role bindings: Auth (2, auth_service_role), Identity (3, atlas_app_role), Domain (3, atlas_app_role), Integration (2, atlas_app_role), Epistemic (6, atlas_app_role), Proposal (3, atlas_app_role), Policy (1, atlas_app_role), Permit (3, atlas_app_role), Snapshot (1, atlas_app_role), Tombstone (1, atlas_app_role), Outcome (1, atlas_app_role), Model (2, atlas_app_role), Disagreement (2, atlas_app_role), Reconciliation (1, atlas_app_role), Internal (1, append_audit_event, no runtime EXECUTE grant)
 Grant counts: auth_service_role 2, atlas_app_role 29, append_audit_event runtime EXECUTE none
 ACR-018 alignment: no material conflict
+Clarification added: 2026-08-19 (task AH-CGR-010A1, following empirical PostgreSQL 16.15 execution findings in AH-CGR-010/AH-CGR-010A/AH-CGR-010A0; not present in the original ACR-026 canonicalization)
+Database ownership boundary: B001 provisions the PostgreSQL database under the infrastructure/admin identity; B002 creates the four approved Governance DB roles and, as its final administrative handoff step, transfers ownership of the target database to atlas_governance_owner; M001 remains responsible for creating schema atlas_governance, owned by atlas_governance_owner
+Final target PostgreSQL database owner: atlas_governance_owner
+Migrator database-level CREATE capability: derived from atlas_governance_migrator's existing inheritable membership in atlas_governance_owner once atlas_governance_owner becomes database owner; no standalone CREATE ON DATABASE grant required
+Migrator public-schema CREATE capability: derived the same way via the dynamic pg_database_owner pseudo-role that owns the public schema; no standalone CREATE ON SCHEMA public grant required
+PUBLIC / auth_service_role / atlas_app_role CREATE ON public: NO, unchanged
+Alembic version metadata table: public.alembic_version; classified as migration metadata, not Governance runtime data; not counted among the 25 Stage 1 tables
+public schema policy: contains no Governance runtime/application relations; public.alembic_version is the one approved migration metadata exception
+Owner/executor separation preserved: atlas_governance_owner remains NOLOGIN administrative/object owner; atlas_governance_migrator remains the LOGIN migration executor; migrator is not made database owner directly
+Empirical basis: verified on PostgreSQL 16.15 (AH-CGR-010A0) — before ownership transfer, migrator database CREATE and public CREATE were both FALSE; after ALTER DATABASE ... OWNER TO atlas_governance_owner, both became TRUE; rollback-wrapped CREATE TABLE in public and CREATE SCHEMA ... AUTHORIZATION atlas_governance_owner, both executed by atlas_governance_migrator, both succeeded and left no permanent trace
+B001/B002/M001-M014 sequence: unchanged, no new phase
 ```
 
 ## ACR-027 — Atlas Governance First-Root Service Identity Bootstrap

@@ -215,6 +215,42 @@ dependency/security family → runtime grants/revokes → verification/
 lockdown). Runtime is enabled only after the final verification/lockdown
 gate passes.
 
+**Database ownership boundary** (clarification added 2026-08-19, task
+AH-CGR-010A1, following empirical PostgreSQL 16.15 execution findings in
+AH-CGR-010/AH-CGR-010A/AH-CGR-010A0 — not present in the original ACR-026
+canonicalization): B001 provisions the PostgreSQL database under the
+infrastructure/admin identity. B002 creates the four approved Governance
+DB roles and, as its final administrative handoff step, transfers
+ownership of the target database to `atlas_governance_owner`. M001
+remains responsible for creating schema `atlas_governance`, owned by
+`atlas_governance_owner` — this does not change.
+
+Final target PostgreSQL database owner: `atlas_governance_owner`.
+`atlas_governance_migrator` derives its required database-level `CREATE`
+capability (needed for `CREATE SCHEMA` in M001) from its existing
+inheritable membership in `atlas_governance_owner`, once
+`atlas_governance_owner` owns the database — no standalone
+`CREATE ON DATABASE` grant is required. The same mechanism, via the
+dynamic `pg_database_owner` pseudo-role that owns the `public` schema,
+gives the migrator `CREATE` on `public` without any standalone
+`CREATE ON SCHEMA public` grant either. `PUBLIC`, `auth_service_role`, and
+`atlas_app_role` remain unable to create anything in `public`.
+
+The Alembic version table, `public.alembic_version`, is migration
+metadata, not Governance runtime data, and is the one approved
+administrative relation permitted in `public`; it is not counted among
+the 25 Stage 1 tables. `atlas_governance_owner` remains the NOLOGIN
+administrative/object owner and `atlas_governance_migrator` remains the
+LOGIN migration executor — the migrator is never made database owner
+directly, preserving the owner/executor separation.
+
+Empirically verified on PostgreSQL 16.15 (AH-CGR-010A0): before the
+ownership transfer, migrator database-CREATE and public-CREATE were both
+`FALSE`; after `ALTER DATABASE ... OWNER TO atlas_governance_owner`, both
+became `TRUE`; rollback-wrapped probes of `CREATE TABLE` in `public` and
+`CREATE SCHEMA ... AUTHORIZATION atlas_governance_owner`, both executed as
+`atlas_governance_migrator`, both succeeded and left no permanent trace.
+
 Production data protection: destructive downgrade of data-bearing tables
 is prohibited; forward-fix is preferred once historical data exists.
 Governance runtime audit (`audit_events`) is distinct from
