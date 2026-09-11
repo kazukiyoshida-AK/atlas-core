@@ -1021,3 +1021,36 @@ Function count impact: none, remains 32
 ACR-018 alignment: no material conflict
 ```
 
+## ACR-028 — Outcome & Correction Record Boundary Decision
+
+```text
+Decision ID: ACR-028
+Title: Outcome & Correction Record Boundary Decision
+Status: Approved
+Architecture status: CANONICAL AND FIXED (decision-level only; not an implementation approval)
+Decision date: 2026-09-11 (approved in controlling design/review session, task ACR-028)
+Approved by: User
+Reference document: this entry
+Existing model set: the 12 previously approved Canonical models are unchanged by this ACR
+Future model addition: Core will add two new Canonical models in a future, separately approved implementation task: Outcome and CorrectionRecord
+Outcome ownership: Core Canonical, append-only record of what actually occurred in reality
+Outcome candidate fields: outcome_id, outcome_kind, subject_ref, evidence_refs, provenance_ref, observed_at, recorded_at
+Outcome/Forecast relationship: Outcome may reference a Forecast by reference only; Outcome does not hold Forecast content or an Evaluation verdict
+Forecast and Evaluation ownership: Head-owned, not Core Canonical
+CorrectionRecord ownership: Core Canonical, append-only; never deletes or overwrites a prior record, records only a correction/supersession relationship
+CorrectionRecord initial scope: closed set of exactly three subject concepts, Evidence, Observation, Outcome
+CorrectionRecord relationship shape: superseded-to-superseding within the same concept only, old-to-new, no cross-concept correction
+CorrectionRecord explicit non-goal: no generic relationship type or general-purpose graph edge model is introduced
+CorrectionRecord candidate fields: correction_id, subject_concept, superseded_ref, superseding_ref, correction_kind, provenance_ref, recorded_at
+Layer boundary, Core: Canonical ID, Evidence, Observation, Outcome, provenance, correction relationships
+Layer boundary, Head: Evidence View, Forecast, Evaluation, Causal Candidate, Learning Candidate, Compute Plan
+Layer boundary, Governance: Permit, Cost Authorization, Budget Reservation, runtime authorization, audit
+Layer boundary, Domain: RawArtifact byte storage, domain-specific data, external execution results
+Head write authority over Core: Head does not issue or rewrite Core Canonical records directly
+Explicit non-scope: DB, ORM, Alembic, API, or runtime implementation; changes to the existing 12 models; resolution of the Artifact and Evidence.artifact_locator limitation; connection to Governance decision_outcomes; any dependency on or judgment about M016 implementation status; Head, Governance, or Domain implementation
+Follow-on condition: implementation of Outcome and CorrectionRecord requires a separate, explicit approval task
+Follow-on condition: pre-implementation review required for model contract, tests, and consistency with this ACR
+Follow-on condition: Governance integration is a separate design and a separate approval
+ACR-018 alignment: no material conflict
+```
+
