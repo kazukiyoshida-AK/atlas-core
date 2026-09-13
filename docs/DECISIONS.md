@@ -1054,3 +1054,42 @@ Follow-on condition: Governance integration is a separate design and a separate 
 ACR-018 alignment: no material conflict
 ```
 
+## ACR-029 — Core Persistence Authority Decision
+
+```text
+Decision ID: ACR-029
+Title: Core Persistence Authority Decision
+Status: Approved
+Architecture status: CANONICAL AND FIXED (decision-level only; not an implementation approval)
+Decision date: 2026-09-13 (approved in controlling design/review session, task AH-CORE-015)
+Approved by: User
+Reference document: this entry
+Prior analysis: AH-CORE-011, AH-CORE-012, AH-CORE-013, AH-CORE-014 (Core Canonical Persistence Boundary Design and Decision Draft)
+Options considered: A, Domain-side Adapter storage (status quo); B, in-repo atlas-core File Store/Registry; C, separate Canonical Registry repository; D, defer persistence to a future Decision
+AH-CORE-013 finding, reaffirmed: Options B and C are not pre-authorized by any existing ACR; ACR-002 through ACR-014's "Initial implementation: Pure Core Model only" / "Canonical Model implementation: Not authorized", ACR-019's "dependency-free ... no ORM, no SQLAlchemy, no Alembic, no SQL", and ACR-028's "Explicit non-scope: DB, ORM, Alembic, API, or runtime implementation" do not constitute pre-authorization for a file-based or repository-based store
+Selected option: B — atlas-core内File Store / Registry, an in-repo, dependency-free, file-based canonical registry for Outcome and CorrectionRecord
+Reason, single source of truth: secures one physical registration surface for Core Outcome / CorrectionRecord, replacing the current state in which "Core Canonical" is a contractual label only, with no physical record anywhere
+Reason, avoids fragmentation: avoids the corrosion of正本性 (single-source-of-truth status) that results from each Domain independently storing its own copy with no central place to inspect or reconcile
+Reason, cost: lower initial implementation cost and lower ongoing operational burden than a DB or network API, and lower than Option C's repository-bootstrap cost
+Reason, explicit boundary-extension authorization: this Decision exists specifically because Option B extends atlas-core's implementation scope beyond "Pure Core Model only"; that extension is deliberate and explicit here, never inferred or assumed by any prior ACR
+Pure Model boundary status after this Decision: extended, specifically and only to cover a dependency-free, file-based registration/read surface for Outcome and CorrectionRecord; no other model's implementation scope changes
+Existing model set: the 12 ACR-014 models plus Outcome and CorrectionRecord (14 total) are unchanged in field definition by this Decision
+Outcome/CorrectionRecord field definitions: Unchanged by this Decision; this Decision governs only where and how instances may be persisted, never what fields they carry
+This Decision does not approve: implementation itself; DB, API, ORM, or Alembic of any kind; any Governance migration; Head, Domain, or Governance integration; a technical enforcement mechanism restricting registration to Domain callers
+Domain-only write status: remains an organizational control only (CLAUDE.md discipline, code review, repository separation); AH-CORE-013 confirmed no technical enforcement mechanism exists in atlas-core today, and this Decision does not create one
+Mandatory follow-on condition: a separate, explicit File Store implementation-approval task is required before any code is written
+Mandatory follow-on condition: that implementation task must design atomic write
+Mandatory follow-on condition: that implementation task must design no-overwrite enforcement
+Mandatory follow-on condition: that implementation task must design idempotency (same ID and same content accepted as a no-op; same ID with different content rejected, never silently overwritten)
+Mandatory follow-on condition: that implementation task must design conflict handling for CorrectionRecord (multiple independent corrections of the same superseded_ref may coexist; no automatic resolution is introduced)
+Mandatory follow-on condition: that implementation task must design concurrency / locking for concurrent registration attempts
+Mandatory follow-on condition: that implementation task must design backup / recovery for the File Store's physical contents
+Mandatory follow-on condition: that implementation task must define the Domain / Head power boundary at the code level (Head remains read-only; Domain remains the sole intended write caller, though no technical enforcement exists yet)
+Mandatory follow-on condition: pre-implementation review required for the File Store design, before the implementation-approval task begins
+Future flexibility: if requirements grow beyond a single-repository file-based registry (multi-process concurrent access at scale, cross-repository sharing, or query/index needs a flat file store cannot reasonably provide), a separate future Decision may re-evaluate a Registry repository (Option C), a database engine, or a network API; this Decision does not permanently fix File Store as Core's only future persistence mechanism
+DB / API introduction: remains explicitly deferred to a separate, future Decision (illustrative: ACR-030), independent of this Decision
+ACR-028 alignment: no material conflict; Outcome/CorrectionRecord ownership, field shape, and Core/Head/Governance/Domain layer boundaries established by ACR-028 are unchanged by this Decision
+ACR-019/ACR-020 alignment: no material conflict; Governance's reference to Core remains opaque TEXT ID only, no physical FK, regardless of this Decision; this Decision grants Governance no access to the File Store's internals
+ACR-014 alignment: the "Pure Core Model only" characterization is explicitly and narrowly superseded for Outcome/CorrectionRecord persistence only by this Decision; it is not superseded for any other model or for Core generally
+```
+
