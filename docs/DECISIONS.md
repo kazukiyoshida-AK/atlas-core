@@ -1093,3 +1093,32 @@ ACR-019/ACR-020 alignment: no material conflict; Governance's reference to Core 
 ACR-014 alignment: the "Pure Core Model only" characterization is explicitly and narrowly superseded for Outcome/CorrectionRecord persistence only by this Decision; it is not superseded for any other model or for Core generally
 ```
 
+## ACR-030 — Atlas Head Core Dependency Mechanism Decision
+
+```text
+Decision ID: ACR-030
+Title: Atlas Head Core Dependency Mechanism Decision
+Status: Approved
+Architecture status: CANONICAL AND FIXED (decision-level only; not an implementation approval)
+Decision date: 2026-09-14 (approved in controlling design/review session, tasks AH-CORE-029/030/031)
+Approved by: User
+Reference document: this entry
+Implementing repository: atlas-head (separate repository, bootstrapped under AH-CORE-028; not part of atlas-core)
+Prior analysis: AH-CORE-023 through AH-CORE-029 (Atlas Head read-only consumer-boundary design and repository-strategy/dependency-mechanism comparison)
+First-candidate dependency mechanism: SSH pinned Git dependency (Option A of AH-CORE-029's four compared options: SSH pinned, HTTPS pinned, local path, deferral)
+Commit pinning requirement: atlas-core MUST be referenced by an exact, fixed commit SHA only; branch references (including @main) are prohibited as the pin target, without exception
+Key separation requirement: the developer's personal SSH key and the CI Deploy Key used to resolve the atlas-core dependency MUST be distinct; the personal key is never reused as the CI key
+CI Deploy Key scope requirement: the Deploy Key registered against atlas-core for CI use MUST be read-only; write access for this key is prohibited
+Personal key propagation: the developer's personal SSH private key must never be copied into, stored in, or exposed to the CI environment (GitHub Actions secrets, runner filesystem, logs, or any other CI surface)
+Deferred, separately-approved actions: Deploy Key issuance, its registration in atlas-core's repository settings, GitHub Actions Secrets configuration, and any resulting CI workflow change are not authorized by this Decision; each requires its own separate, explicit Implementation Task
+Current dependency state: atlas-head's pyproject.toml retains dependencies = [] (as bootstrapped under AH-CORE-028); the atlas-core dependency is not added by this Decision
+Interim state status: Option D (dependency deferral) is explicitly recorded as a safe, indefinitely acceptable interim state, not a gap requiring urgent remediation; atlas-head may remain in this state for as long as no Head business logic requires reading Core records
+Read surface restriction: once added, the atlas-core dependency may be used only through the four functions exposed by atlas_core.store.read (get_outcome, get_correction_record, list_outcomes, list_correction_records); no other atlas_core.store.read symbol is pre-approved by this Decision
+Write import prohibition: importing atlas_core.store.write from any atlas-head code is prohibited; per AH-CORE-026R's correction, this prohibition is an operational control only (CLAUDE.md, code review, and any future CI/lint import-boundary check), never a claim of technical or structural impossibility
+CI/lint boundary check: adopting import-linter, a ruff banned-import rule, or an equivalent CI check to enforce the write-import prohibition mechanically is deferred to a separate, future Implementation Task; neither the tool choice nor its configuration is decided by this Decision
+This Decision does not approve: pyproject.toml changes, dependency installation, Deploy Key issuance, GitHub Secrets configuration, any CI or repository-settings change, or Head business logic implementation (Forecast, Evaluation, Causal Candidate, Learning Candidate, Compute Plan)
+Existing model set and layer boundaries: unchanged by this Decision
+ACR-028 alignment: no material conflict; Head's read-only relationship to Core Outcome/CorrectionRecord established by ACR-028 is unchanged by this Decision
+ACR-029 alignment: no material conflict; this Decision governs only how a future Head repository may depend on and read from Core's File Store, never the File Store's internal design or persistence mechanism; the "ACR-030" name mentioned illustratively in ACR-029's own text (as an example future DB/API Decision) is a coincidental placeholder reference only and does not describe or constrain this Decision
+```
+
