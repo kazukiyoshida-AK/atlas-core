@@ -9,6 +9,7 @@ from atlas_core import CorrectionRecord, Outcome
 from atlas_core.store import RecordConflictError, RecordCorruptedError, WriterLockError
 from atlas_core.store.write import (
     _LOCK_FILE_NAME,
+    _write_atomic,
     register_correction_record,
     register_outcome,
 )
@@ -234,6 +235,15 @@ def test_writer_lock_reclaims_a_confirmed_dead_pid(tmp_path: Path) -> None:
     register_outcome(_valid_outcome(), store_root=tmp_path)
 
     assert not lock_path.exists()
+
+
+def test_write_atomic_preserves_bytes_containing_newlines(tmp_path: Path) -> None:
+    payload = b"line-one\nline-two\r\nline-three"
+    final_path = tmp_path / "outcomes" / "binary-fidelity.json"
+
+    _write_atomic(final_path, payload)
+
+    assert final_path.read_bytes() == payload
 
 
 @pytest.mark.skipif(os.name == "posix", reason="exercises the non-POSIX fail-safe path")

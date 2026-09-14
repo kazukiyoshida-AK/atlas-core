@@ -84,7 +84,8 @@ class _WriterLock:
 
     def _create_lock_file(self) -> None:
         fd = os.open(
-            self._lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY
+            self._lock_path,
+            os.O_CREAT | os.O_EXCL | os.O_WRONLY | getattr(os, "O_BINARY", 0),
         )
         try:
             os.write(fd, str(os.getpid()).encode("ascii"))
@@ -122,7 +123,10 @@ def _write_atomic(final_path: Path, payload: bytes) -> None:
     final_path.parent.mkdir(parents=True, exist_ok=True)
     temp_path = final_path.parent / f".{final_path.name}.tmp-{os.getpid()}-{uuid4().hex}"
 
-    fd = os.open(temp_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    fd = os.open(
+        temp_path,
+        os.O_CREAT | os.O_EXCL | os.O_WRONLY | getattr(os, "O_BINARY", 0),
+    )
     try:
         os.write(fd, payload)
         os.fsync(fd)
