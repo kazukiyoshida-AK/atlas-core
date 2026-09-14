@@ -1,0 +1,72 @@
+name: Core Store Cross-Platform Verification
+
+# AH-CORE-020I: verifies Core File Store contracts across OS/Python
+# combinations, per the AH-CORE-020 design. Does not add ruff/mypy
+# (separate approval task) and does not modify pyproject.toml.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    name: pytest (${{ matrix.os }}, Python ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            python-version: "3.11"
+          - os: ubuntu-latest
+            python-version: "3.12"
+          - os: windows-latest
+            python-version: "3.11"
+          - os: windows-latest
+            python-version: "3.12"
+          - os: macos-latest
+            python-version: "3.11"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # pytest is installed here for this CI job only. It is NOT added
+      # to pyproject.toml -- the project's dependency set (empty
+      # runtime deps) is left unchanged. Version is pinned only for
+      # this workflow's reproducibility.
+      - name: Install pytest (CI-only, no permanent dependency added)
+        run: python -m pip install --upgrade pip && python -m pip install "pytest==9.1.1"
+
+      - name: Run full test suite
+        run: python -m pytest -v -rs | tee pytest_output.log
+
+      - name: Report skip summary for this OS/Python job
+        if: always()
+        run: |
+          echo "=== Skip summary: ${{ matrix.os }} / Python ${{ matrix.python-version }} ==="
+          skip_count=$(grep -c " SKIPPED " pytest_output.log || true)
+          echo "Skipped tests: ${skip_count:-0}"
+          grep " SKIPPED " pytest_output.log || echo "(none skipped)"
+
+      - name: Report POSIX stale-lock reclamation test result
+        if: always()
+        run: |
+          echo "=== test_writer_lock_reclaims_a_confirmed_dead_pid ==="
+          grep "test_writer_lock_reclaims_a_confirmed_dead_pid" pytest_output.log || echo "not found in output"
+
+      - name: Report Windows fail-safe test result
+        if: always()
+        run: |
+          echo "=== test_writer_lock_fails_safe_on_non_posix_platform ==="
+          grep "test_writer_lock_fails_safe_on_non_posix_platform" pytest_output.log || echo "not found in output"
